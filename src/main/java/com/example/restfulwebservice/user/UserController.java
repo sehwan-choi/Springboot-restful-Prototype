@@ -42,4 +42,21 @@ public class UserController {
 
         return ResponseEntity.created(location).build();
     }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id){
+        User user = service.deleteById(id);
+
+        if(user == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found",id));
+        }
+    }
+
+    @PutMapping("/users")
+    public void updateUser(@RequestBody User user){
+        User updateUser = service.modifiedById(user);
+
+        if(updateUser == null)
+            throw new UserNotFoundException(String.format("ID[%s] not found",user.getId()));
+    }
 }
